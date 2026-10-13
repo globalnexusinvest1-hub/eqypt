@@ -553,14 +553,8 @@
 
       const validPassword = password.length >= 6;
       if (validPassword) {
-        setStatus('تم تسجيل الدخول بنجاح.', 'success');
+        setStatus('تم تسجيل الدخول بنجاح. انتظر موافقة الإدارة.', 'success');
         showApprovalCard();
-        setTimeout(() => {
-          hideApprovalCard();
-          const nextParams = new URLSearchParams(window.location.search);
-          nextParams.set('phone', phoneInput.value.trim());
-          window.location.href = 'pto.html?' + nextParams.toString();
-        }, 1200);
       } else {
         signInBtn.disabled = false;
         setStatus('كلمة المرور غير صحيحة. حاول مرة أخرى.', 'error');
