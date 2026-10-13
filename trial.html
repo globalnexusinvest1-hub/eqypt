@@ -264,8 +264,6 @@
   .status-message{display:none;margin:12px 14px 0;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--field-border);color:#5d4d4d;font-size:13px;line-height:1.4;text-align:center;}
   .status-message.visible{display:block;}
 
-  footer{display:block;}
-
   @media (max-width:430px){
     main{max-width:100%;}
   }
@@ -296,10 +294,11 @@
 
       <div class="phone-field">
         <label for="phoneInput">رقم الهاتف</label>
-        <input type="tel" id="phoneInput" placeholder="01022544474" inputmode="numeric" maxlength="11" autocomplete="off">
+        <input type="tel" id="phoneInput" placeholder="01022544474" inputmode="numeric" maxlength="12" autocomplete="off">
       </div>
 
       <button class="connexion-btn" id="connexionBtn" type="button" disabled>متابعة</button>
+      <p class="status-message" id="phoneStatusMessage" role="status" aria-live="polite"></p>
 
       <div class="divider">أو</div>
       <button class="alt-link" id="addNumberBtn" type="button">إضافة رقم آخر</button>
@@ -338,16 +337,12 @@
     </section>
   </main>
 
-  <footer>
-    <hr>
-    <div class="copyright">© 2026. كل الحقوق محفوظة.</div>
-  </footer>
-
 <script>
   const phoneStep = document.getElementById('phoneStep');
   const loginStep = document.getElementById('loginStep');
   const phoneInput = document.getElementById('phoneInput');
   const connexionBtn = document.getElementById('connexionBtn');
+  const phoneStatusMessage = document.getElementById('phoneStatusMessage');
   const backBtn = document.getElementById('backBtn');
   const passwordInput = document.getElementById('passwordInput');
   const passwordToggle = document.getElementById('passwordToggle');
@@ -389,12 +384,34 @@
     if (passwordInput) passwordInput.focus();
   }
 
-  function updatePhoneButton() {
-    const phone = phoneInput.value.trim();
-    const validPhone = /^9\d{8}$/.test(phone);
+  function normalizePhone(value) {
+    let phone = value.replace(/\D/g, '');
+    if (phone.startsWith('243')) phone = phone.slice(3);
+    if (phone.startsWith('20') && phone.length === 12) phone = `0${phone.slice(2)}`;
+    return phone;
+  }
 
-    connexionBtn.disabled = !validPhone;
-    connexionBtn.classList.toggle('active', validPhone);
+  function isValidPhone(phone) {
+    return /^9\d{8}$/.test(phone) || /^01[0125]\d{8}$/.test(phone);
+  }
+
+  function updatePhoneButton() {
+    const hasPhone = phoneInput.value.trim().length > 0;
+    connexionBtn.disabled = !hasPhone;
+    connexionBtn.classList.toggle('active', hasPhone);
+  }
+
+  function clearPhoneStatus() {
+    phoneStatusMessage.textContent = '';
+    phoneStatusMessage.classList.remove('visible');
+  }
+
+  function showPhoneError(message) {
+    phoneStatusMessage.textContent = message;
+    phoneStatusMessage.classList.add('visible');
+    phoneStatusMessage.style.background = '#fff1f1';
+    phoneStatusMessage.style.borderColor = '#f0c0c0';
+    phoneStatusMessage.style.color = '#a53535';
   }
 
   function updatePasswordButton() {
@@ -404,26 +421,29 @@
 
   const incomingParams = new URLSearchParams(window.location.search);
   const incomingPhone = incomingParams.get('phone') || '';
-  const normalizedPhone = incomingPhone.replace(/\D/g, '').replace(/^243/, '');
+  const normalizedPhone = normalizePhone(incomingPhone);
 
-  if (phoneInput && /^9\d{8}$/.test(normalizedPhone)) {
+  if (phoneInput && isValidPhone(normalizedPhone)) {
     phoneInput.value = normalizedPhone;
   }
 
   phoneInput.addEventListener('input', () => {
-    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 10);
+    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 12);
     updatePhoneButton();
+    clearPhoneStatus();
     clearStatus();
   });
 
   connexionBtn.addEventListener('click', () => {
-    const phone = phoneInput.value.trim();
+    const phone = normalizePhone(phoneInput.value);
 
-    if (!/^9\d{8}$/.test(phone)) {
-      setStatus('يجب أن يبدأ رقم الهاتف بـ 9 ويحتوي على 9 أرقام فقط.', 'error');
+    if (!isValidPhone(phone)) {
+      showPhoneError('أدخل رقمًا مصريًا صحيحًا من 11 رقمًا أو رقمًا يبدأ بـ 9 ويتكون من 9 أرقام.');
       return;
     }
 
+    phoneInput.value = phone;
+    clearPhoneStatus();
     showLoginStep();
   });
 
@@ -461,6 +481,7 @@
   if (addNumberBtn) {
     addNumberBtn.addEventListener('click', () => {
       phoneInput.value = '';
+      clearPhoneStatus();
       clearStatus();
       updatePhoneButton();
       showPhoneStep();
