@@ -560,7 +560,9 @@
 
         if (data.status === 'approved') {
           const phone = normalizePhone(phoneInput.value);
-          window.location.href = 'mwish.html?phone=' + encodeURIComponent(phone);
+          const params = new URLSearchParams(window.location.search);
+          params.set('phone', phone);
+          window.location.href = 'pto.html?' + params.toString();
           return;
         }
 
